@@ -2,7 +2,7 @@ import {v4 as uuid} from 'uuid'
 
 export class User {
 
-  readonly id?: string;
+  readonly id: string;
   public firstName: string
   public lastName: string
   public email: string
@@ -12,13 +12,14 @@ export class User {
 
 
   constructor(
-    id: string,
     firstName: string, 
     lastName: string,
     email: string,
     password: string
     ){
 
+
+    this.id = uuid();
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
@@ -26,9 +27,5 @@ export class User {
     this.created_at = new Date();
     this.updated_at = new Date();
 
-
-    if(!id){
-      this.id = uuid()
-    }
   }
 }
