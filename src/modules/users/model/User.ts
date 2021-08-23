@@ -6,6 +6,7 @@ export class User {
   public firstName: string
   public lastName: string
   public email: string
+  public password: string
   public created_at: Date;
   public updated_at: Date;
 
@@ -14,12 +15,14 @@ export class User {
     id: string,
     firstName: string, 
     lastName: string,
-    email: string
+    email: string,
+    password: string
     ){
 
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.password = password;
     this.created_at = new Date();
     this.updated_at = new Date();
 
