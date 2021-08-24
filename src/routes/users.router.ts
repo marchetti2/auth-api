@@ -1,10 +1,11 @@
-import { request, response, Router } from "express";
-import { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 
-import { createUserController } from "../modules/users/useCases/createUser/";
+import { createUserController } from "../modules/users/useCases/createUser";
 
-const routes = Router();
+const usersRoutes = Router();
 
-routes.get("/", createUserController.handle(request, response));
+usersRoutes.post("/", (request: Request, response: Response) => {
+  createUserController.handle(request, response);
+});
 
-export { routes };
+export { usersRoutes };

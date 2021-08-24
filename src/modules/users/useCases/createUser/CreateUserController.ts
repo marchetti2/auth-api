@@ -16,6 +16,7 @@ class CreateUserController {
         password,
         email,
       });
+      console.log(user);
 
       return response.status(201).json(user);
     } catch (error) {

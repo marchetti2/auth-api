@@ -13,7 +13,7 @@ class CreateUserUseCase {
       email,
       password,
     });
-
+    console.log(user);
     return user;
   }
 }

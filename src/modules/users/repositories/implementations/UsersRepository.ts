@@ -5,13 +5,15 @@ class UsersRepository implements IUsersRepository {
   private users: User[];
 
   constructor() {
-    this.users;
+    this.users = [];
   }
 
   create({ firstName, lastName, email, password }: ICreateUserDTO) {
     const user = new User(firstName, lastName, email, password);
+    console.log(user);
 
     this.users.push(user);
+    console.log(this.users);
 
     return user;
   }
