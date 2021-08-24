@@ -1,9 +1,11 @@
 import {getRepository, Repository} from 'typeorm'
+import { AppError } from '../../../../shared/errors/AppError';
 
 import { User } from "../../entities/User";
-import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
+import { IUsersRepository } from "../IUsersRepository";
+import { ICreateUserDTO } from '../../useCases/createUser/ICreateUserDTO'
 
-export class UsersRepository implements IUsersRepository {
+class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
 
   constructor() {
@@ -12,19 +14,21 @@ export class UsersRepository implements IUsersRepository {
 
   async create({ first_name, last_name, email, password }: ICreateUserDTO) {
 
-    const user = await this.repository.create({
+    const user = this.repository.create({
       first_name, last_name, email, password
     })
 
-    this.repository.save(user)
+    await this.repository.save(user)
 
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async findByEmail(email: string): Promise<User | undefined> {
+
+    return await this.repository.findOne(email);
+
   }
-  async delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+
 }
+
+export { UsersRepository }
