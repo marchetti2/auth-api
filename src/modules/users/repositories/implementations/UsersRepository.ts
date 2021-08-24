@@ -1,29 +1,30 @@
+import {getRepository, Repository} from 'typeorm'
+
 import { User } from "../../entities/User";
 import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
 
-class UsersRepository implements IUsersRepository {
-  private users: User[];
+export class UsersRepository implements IUsersRepository {
+  private repository: Repository<User>;
 
   constructor() {
-    this.users = [];
+    this.repository = getRepository(User)
   }
 
-  create({ firstName, lastName, email, password }: ICreateUserDTO) {
-    const user = new User(firstName, lastName, email, password);
-    console.log(user);
+  async create({ first_name, last_name, email, password }: ICreateUserDTO) {
 
-    this.users.push(user);
-    console.log(this.users);
+    const user = await this.repository.create({
+      first_name, last_name, email, password
+    })
+
+    this.repository.save(user)
 
     return user;
   }
 
-  findByEmail(email: string): User {
+  async findByEmail(email: string): Promise<User> {
     throw new Error("Method not implemented.");
   }
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }
-
-export { UsersRepository };

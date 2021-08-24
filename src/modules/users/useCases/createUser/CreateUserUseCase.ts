@@ -1,19 +1,23 @@
+import { inject, injectable } from "tsyringe";
 import {
   IUsersRepository,
   ICreateUserDTO,
 } from "../../repositories/IUsersRepository";
 
+@injectable()
 class CreateUserUseCase {
-  constructor(private userRepository: IUsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: IUsersRepository
+    ) {}
 
-  execute({ firstName, lastName, email, password }: ICreateUserDTO) {
-    const user = this.userRepository.create({
-      firstName,
-      lastName,
+  async execute({ first_name, last_name, email, password }: ICreateUserDTO) {
+    const user = await this.userRepository.create({
+      first_name,
+      last_name,
       email,
       password,
     });
-    console.log(user);
     return user;
   }
 }

@@ -1,16 +1,16 @@
 import { User } from "../entities/User";
 
 interface ICreateUserDTO {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password:string
 }
 
 interface IUsersRepository {
-  create({firstName,lastName, password, email }: ICreateUserDTO): User ;
-  findByEmail(email: string): User | undefined
-  delete(id:string): void
+  create({first_name,last_name, password, email }: ICreateUserDTO): Promise<User>;
+  findByEmail(email: string): Promise<User | undefined>
+  delete(id:string): Promise<void>
 }
 
 export { IUsersRepository, ICreateUserDTO}

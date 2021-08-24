@@ -1,5 +1,6 @@
 import express from "express";
 import './database'
+import './shared/container';
 
 import { usersRoutes } from "./routes/users.router";
 
