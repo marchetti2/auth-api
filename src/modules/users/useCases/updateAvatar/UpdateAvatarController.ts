@@ -1,24 +1,27 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import { UserAvatarUserUseCase } from './UserAvatarUseCase';
+import { ProfileMap } from '../../mappers/ProfileMap';
+import { UpdateAvatarUserUseCase } from './UpdateAvatarUseCase';
 
-class UserAvatarController {
+class UpdateAvatarController {
 
   async execute(request: Request, response: Response): Promise<Response> {
 
     const { id } = request.user;
     const { filename } = request.file;
 
-    const updateUserAvatar = container.resolve(UserAvatarUserUseCase);
+    const updateUserAvatar = container.resolve(UpdateAvatarUserUseCase);
 
     const user = await updateUserAvatar.execute({
       id,
       avatarFilename: filename,
     });
 
-    return response.json(user)
+    const profileDTO = ProfileMap.toDTO(user);
+
+    return response.json(profileDTO)
   }
 }
 
-export { UserAvatarController }
+export { UpdateAvatarController }

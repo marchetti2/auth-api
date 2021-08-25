@@ -5,7 +5,7 @@ import fs from "fs";
 import { User } from "../../entities/User";
 import upload from "../../../../config/upload";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { UserAvatarError } from "./UserAvatarError";
+import { UpdateAvatarError } from "./UpdateAvatarError";
 
 interface IRequest {
   id: string;
@@ -13,7 +13,7 @@ interface IRequest {
 }
 
 @injectable()
-class UserAvatarUserUseCase {
+class UpdateAvatarUserUseCase {
 
   constructor(
     @inject('UsersRepository')
@@ -25,7 +25,7 @@ class UserAvatarUserUseCase {
     const user = await this.usersRepository.findById(id);
 
     if (!user) {
-      throw new UserAvatarError();
+      throw new UpdateAvatarError();
     }
 
     if (user.avatar) {
@@ -42,4 +42,4 @@ class UserAvatarUserUseCase {
   }
 }
 
-export { UserAvatarUserUseCase };
+export { UpdateAvatarUserUseCase };
