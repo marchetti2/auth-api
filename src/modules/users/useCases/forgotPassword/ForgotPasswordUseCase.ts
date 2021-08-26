@@ -1,17 +1,17 @@
 import { injectable, inject } from "tsyringe";
 import path from "path";
 
-import AppError from "@shared/errors/AppError";
-import IUsersRepository from "@modules/users/repository/IUsersRepository";
+import { ForgotPasswordError } from "./ForgotPasswordError";
+import { IUsersRepository } from "../../repositories/IUsersRepository";
 import IMailProvider from "@shared/container/providers/MailProvider/models/IMailProvider";
-import IUserTokensRepository from "@modules/users/repository/IUserTokenRepository";
+import { IUserTokenRepository } from "../../repositories/IUserTokenRepository";
 
 interface IRequest {
   email: string;
 }
 
 @injectable()
-class SendForgotPasswordEmailSercice {
+class ForgotPasswordUseCase {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
@@ -19,18 +19,18 @@ class SendForgotPasswordEmailSercice {
     @inject("MailProvider")
     private mailProvider: IMailProvider,
 
-    @inject("UserTokensRepository")
-    private userTokensRepository: IUserTokensRepository
+    @inject("UserTokenRepository")
+    private userTokenRepository: IUserTokenRepository
   ) {}
 
   async execute({ email }: IRequest): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError("User does not exists");
+      throw new ForgotPasswordError();
     }
 
-    const { token } = await this.userTokensRepository.generate(user.id);
+    const { token } = await this.userTokenRepository.generate(user.id);
 
     const forgotPasswordTempalte = path.resolve(
       __dirname,
@@ -56,4 +56,4 @@ class SendForgotPasswordEmailSercice {
   }
 }
 
-export default SendForgotPasswordEmailSercice;
+export { ForgotPasswordUseCase };

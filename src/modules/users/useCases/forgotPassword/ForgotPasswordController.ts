@@ -4,14 +4,16 @@ import { container } from "tsyringe";
 import { ForgotPasswordUseCase } from "./ForgotPasswordUseCase";
 
 class ForgotPasswordController {
-  async create(request: Request, response: Response): Promise<Response> {
+  async execute(request: Request, response: Response): Promise<Response> {
+
     const { email } = request.body;
 
     const sendForgotPasswordEmail = container.resolve(ForgotPasswordUseCase);
+
     await sendForgotPasswordEmail.execute({
       email,
     });
-    return response.status(204).json();
+    return response.status(204).send();
   }
 }
 
