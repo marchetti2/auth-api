@@ -1,10 +1,8 @@
 import { injectable, inject } from "tsyringe";
 import { isAfter, addHours } from "date-fns";
 
-import AppError from "@shared/errors/AppError";
-import IUsersRepository from "@modules/users/repository/IUsersRepository";
-import IUserTokensRepository from "@modules/users/repository/IUserTokenRepository";
-import IHashProvider from "@modules/users/providers/HashProvider/models/IHashProvider";
+import { ResetPasswordError } from "./ResetPasswordError";
+import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 // import User from '@modules/users/infra/typeorm/entities/User';
 
