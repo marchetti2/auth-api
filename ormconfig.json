@@ -4,7 +4,7 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "database": "app-sports-api",
+  "database": "auth-api",
   "entities": [
     "./src/modules/**/entities/*.ts"
   ],

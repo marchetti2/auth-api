@@ -7,9 +7,11 @@ export class usersTable1629809210712 implements MigrationInterface {
         name: "users",
         columns: [
           {
-            name: "id",
-            type: "uuid",
+            name: 'id',
+            type: 'uuid',
             isPrimary: true,
+            generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: "first_name",
@@ -23,10 +25,12 @@ export class usersTable1629809210712 implements MigrationInterface {
             name: "email",
             type: "varchar",
             isUnique: true,
+            isNullable: false,
           },
           {
             name: "password",
             type: "varchar",
+            isNullable: false,
           },
           {
             name: "avatar",

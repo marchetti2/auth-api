@@ -6,7 +6,9 @@ import {
   Generated,
 } from 'typeorm';
 
-@Entity('user_tokens')
+import { v4 as uuid } from "uuid";
+
+@Entity('user_token')
 class UserToken {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -23,6 +25,12 @@ class UserToken {
 
   @CreateDateColumn()
   updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
 }
 
 export { UserToken };
