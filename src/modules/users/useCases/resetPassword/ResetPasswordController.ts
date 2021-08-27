@@ -4,14 +4,12 @@ import { container } from "tsyringe";
 import { ResetPasswordUseCase } from "./ResetPasswordUseCase";
 
 class ResetPasswordController {
-
   async execute(request: Request, response: Response): Promise<Response> {
-
     const { token, password } = request.body;
 
-    const resetPasswordEmail = container.resolve(ResetPasswordUseCase);
+    const resetPasswordUseCase = container.resolve(ResetPasswordUseCase);
 
-    await resetPasswordEmail.execute({
+    await resetPasswordUseCase.execute({
       token,
       password,
     });
@@ -20,4 +18,4 @@ class ResetPasswordController {
   }
 }
 
-export { ResetPasswordController }
+export { ResetPasswordController };

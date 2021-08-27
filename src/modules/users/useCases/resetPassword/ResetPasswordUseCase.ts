@@ -4,6 +4,7 @@ import { hash } from "bcryptjs";
 
 import { ResetPasswordError } from "./ResetPasswordError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUserTokenRepository } from "../../repositories/IUserTokenRepository";
 
 interface IRequest {
   password: string;
@@ -16,13 +17,12 @@ class ResetPasswordUseCase {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject("UserTokensRepository")
-    private userTokensRepository: IUserTokensRepository,
+    @inject("UserTokenRepository")
+    private userTokenRepository: IUserTokenRepository
   ) {}
 
   async execute({ token, password }: IRequest): Promise<void> {
-
-    const userToken = await this.userTokensRepository.findByToken(token);
+    const userToken = await this.userTokenRepository.findByToken(token);
 
     if (!userToken) {
       throw new ResetPasswordError.TokenDoesNotExistsError();

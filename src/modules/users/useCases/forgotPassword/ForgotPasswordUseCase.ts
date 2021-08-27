@@ -3,7 +3,7 @@ import path from "path";
 
 import { ForgotPasswordError } from "./ForgotPasswordError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import IMailProvider from "@shared/container/providers/MailProvider/models/IMailProvider";
+import { IMailProvider } from "../../../../shared/container/providers/MailProvider/models/IMailProvider";
 import { IUserTokenRepository } from "../../repositories/IUserTokenRepository";
 
 interface IRequest {
@@ -35,21 +35,22 @@ class ForgotPasswordUseCase {
     const forgotPasswordTempalte = path.resolve(
       __dirname,
       "..",
+      "..",
       "views",
       "forgot_password.hbs"
     );
 
     await this.mailProvider.sendMail({
       to: {
-        name: user.name,
+        name: `${user.first_name} ${user.last_name}`,
         email: user.email,
       },
-      subject: "[GoBarber] Recuperação de senha",
+      subject: "App-Sports - Recuperação de senha",
       templateData: {
         file: forgotPasswordTempalte,
         variables: {
-          name: user.name,
-          link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
+          name: `${user.first_name} ${user.last_name}`,
+          link: "http://localhost:3000/reset-password?token=${token}",
         },
       },
     });
