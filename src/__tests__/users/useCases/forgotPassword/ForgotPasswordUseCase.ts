@@ -8,8 +8,9 @@ import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser
 import { ForgotPasswordUseCase } from "../../../../modules/users/useCases/forgotPassword/ForgotPasswordUseCase";
 import { ForgotPasswordError } from "../../../../modules/users/useCases/forgotPassword/ForgotPasswordError";
 import { EtherealMailProvider } from '../../../../shared/container/providers/MailProvider/implementations/EtherealMailProvider';
+import { IMailTemplateProvider } from "../../../../shared/container/providers/MailTemplateProvider/models/IMailTemplateProvider";
 
-describe('SendForgotPasswordEmail', () => {
+describe('ForgotPasswordUseCase', () => {
   let connection: Connection;
   let user: User;
 
@@ -25,7 +26,7 @@ describe('SendForgotPasswordEmail', () => {
 
     usersRepository = new UsersRepository();
     userTokenRepository = new UserTokenRepository();
-    mailProvider = new EtherealMailProvider();
+    mailProvider = new EtherealMailProvider(IMailTemplateProvider);
 
     forgotPasswordUseCase = new ForgotPasswordUseCase(usersRepository, mailProvider, userTokenRepository );
 
@@ -44,10 +45,11 @@ describe('SendForgotPasswordEmail', () => {
   it('should be able to recover the password using the email', async () => {
     const sendMail = jest.spyOn(fakeMailProvider, 'sendMail');
 
-    await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
+    user = await createUserUseCase.execute({
+      first_name: "Mario",
+      last_name: "Luiz",
+      email: "marchetti2@gmail.com",
+      password: "123123123",
     });
 
     await sendForgotPasswordEmail.execute({
