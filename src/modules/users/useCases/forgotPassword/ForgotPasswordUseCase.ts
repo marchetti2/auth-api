@@ -23,7 +23,7 @@ class ForgotPasswordUseCase {
     private userTokenRepository: IUserTokenRepository
   ) {}
 
-  async execute({ email }: IRequest): Promise<void> {
+  async execute({ email }: IRequest): Promise<string> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
@@ -40,7 +40,7 @@ class ForgotPasswordUseCase {
       "forgot_password.hbs"
     );
 
-    await this.mailProvider.sendMail({
+    return (await this.mailProvider.sendMail({
       to: {
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
@@ -53,7 +53,8 @@ class ForgotPasswordUseCase {
           link: `http://localhost:3000/reset-password?token=${token}`,
         },
       },
-    });
+    })
+    )
   }
 }
 

@@ -48,10 +48,7 @@ class UpdateUserProfileUseCase {
     }
 
     if (password && old_password) {
-      console.log(typeof old_password, typeof user.password);
-      console.log(old_password, user.password);
       const checkOldPassword = await compare(old_password, user.password);
-      console.log(checkOldPassword);
       if (!checkOldPassword) {
         throw new UpdateUserProfileError.OldPasswordNotMatchError();
       }

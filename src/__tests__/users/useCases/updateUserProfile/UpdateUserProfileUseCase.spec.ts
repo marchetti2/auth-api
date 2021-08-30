@@ -94,7 +94,6 @@ describe("UpdateProfile", () => {
       old_password: "123123",
       password: "123123123",
     });
-    console.log(user.password);
 
     expect(await compare("123123123", user.password)).toBe(true);
   });

@@ -9,10 +9,10 @@ class ForgotPasswordController {
 
     const forgotPasswordUseCase = container.resolve(ForgotPasswordUseCase);
 
-    await forgotPasswordUseCase.execute({
+    const emailResponse = await forgotPasswordUseCase.execute({
       email,
     });
-    return response.status(204).send();
+    return response.status(200).json({Preview_URL: emailResponse});
   }
 }
 

@@ -39,12 +39,12 @@ export class usersTable1629809210712 implements MigrationInterface {
           },
           {
             name: "created_at",
-            type: "timestamp",
+            type: "timestamptz",
             default: "now()",
           },
           {
             name: "updated_at",
-            type: "timestamp",
+            type: "timestamptz",
             default: "now()",
           },
         ],

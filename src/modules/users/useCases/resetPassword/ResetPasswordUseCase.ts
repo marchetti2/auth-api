@@ -37,9 +37,6 @@ class ResetPasswordUseCase {
     const tokenCraetedAt = userToken.created_at;
     const compareDate = addHours(tokenCraetedAt, 2);
 
-    console.log(tokenCraetedAt);
-    console.log(compareDate);
-
     if (isAfter(Date.now(), compareDate)) {
       throw new ResetPasswordError.TokenExpiredError();
     }
