@@ -1,113 +1,61 @@
-import { injectable, inject } from 'tsyringe';
-import { join } from "path";
-import fs from "fs";
+import { Connection, createConnection } from "typeorm";
+import { v4 as uuid } from "uuid";
 
-import { User } from "../../entities/User";
-import upload from "../../../../config/upload";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { UpdateAvatarError } from "./UpdateAvatarError";
+import { User } from "../../../../modules/users/entities/User";
+import { UsersRepository } from "../../../../modules/users/repositories/implementations/UsersRepository";
+import { UpdateAvatarError } from "../../../../modules/users/useCases/updateAvatar/UpdateAvatarError";
+import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser/CreateUserUseCase";
+import { UpdateAvatarUserUseCase } from "../../../../modules/users/useCases/updateAvatar/UpdateAvatarUseCase";
 
-interface IRequest {
-  id: string;
-  avatarFilename: string;
-}
+describe("UpdateAvatarUser", () => {
+  let connection: Connection;
 
-@injectable()import AppError from '@shared/errors/AppError';
+  let user: User;
+  let usersRepository: UsersRepository;
+  let createUserUseCase: CreateUserUseCase;
+  let updateAvatarUserUseCase: UpdateAvatarUserUseCase;
 
-import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
-import FakeUsersRepository from '@modules/users/repository/fakes/FakeUsersRepository';
-import UpdateUserAvatar from './UpdateUserAvatarService';
+  beforeAll(async () => {
+    connection = await createConnection();
 
-let fakeUsersRepository: FakeUsersRepository;
-let fakeStorageProvider: FakeStorageProvider;
-let updateUserAvatar: UpdateUserAvatar;
+    usersRepository = new UsersRepository();
 
-describe('UpdateUserAvatar', () => {
-  beforeEach(() => {
-    fakeUsersRepository = new FakeUsersRepository();
-    fakeStorageProvider = new FakeStorageProvider();
+    createUserUseCase = new CreateUserUseCase(usersRepository);
+    updateAvatarUserUseCase = new UpdateAvatarUserUseCase(usersRepository);
 
-    updateUserAvatar = new UpdateUserAvatar(
-      fakeUsersRepository,
-      fakeStorageProvider,
-    );
+    await connection.runMigrations();
   });
 
-  it('should be able to update the user avatar', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
-    });
+  afterAll(async () => {
+    await connection.createQueryRunner().dropTable("user_token", true);
+    await connection.createQueryRunner().dropTable("users", true);
+    await connection.createQueryRunner().dropTable("migrations", true);
 
-    await updateUserAvatar.execute({
-      user_id: user.id,
-      avatarFilename: 'avatar.jpg',
-    });
-
-    expect(user.avatar).toBe('avatar.jpg');
+    await connection.close();
   });
 
-  it('should not be able to update avatar from non existing user', async () => {
+  it("should be able to update the user avatar", async () => {
+    user = await createUserUseCase.execute({
+      first_name: "Mario",
+      last_name: "Luiz",
+      email: "marchetti2@gmail.com",
+      password: "123123",
+    });
+
+    user = await updateAvatarUserUseCase.execute({
+      id: user.id,
+      avatarFilename: "avatar.jpg",
+    });
+
+    expect(user.avatar).toBe("avatar.jpg");
+  });
+
+  it("should not be able to update avatar from non existing user", async () => {
     await expect(
-      updateUserAvatar.execute({
-        user_id: 'non-existin-user',
-        avatarFilename: 'avatar.jpg',
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
-
-  it('should delete old avatar when updating new one', async () => {
-    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
-
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
-    });
-
-    await updateUserAvatar.execute({
-      user_id: user.id,
-      avatarFilename: 'avatar.jpg',
-    });
-
-    await updateUserAvatar.execute({
-      user_id: user.id,
-      avatarFilename: 'avatar2.jpg',
-    });
-
-    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
-    expect(user.avatar).toBe('avatar2.jpg');
+      updateAvatarUserUseCase.execute({
+        id: uuid(),
+        avatarFilename: "avatar.jpg",
+      })
+    ).rejects.toBeInstanceOf(UpdateAvatarError);
   });
 });
-
-class UpdateAvatarUserUseCase {
-
-  constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
-  ) {}
-
-  public async execute({ id, avatarFilename }: IRequest): Promise<User> {
-
-    const user = await this.usersRepository.findById(id);
-
-    if (!user) {
-      throw new UpdateAvatarError();
-    }
-
-    if (user.avatar) {
-      const userAvatarFilePath = join(upload.directory, user.avatar);
-      const userAvatarFileExist = await fs.promises.stat(userAvatarFilePath);
-
-      if (userAvatarFileExist) await fs.promises.unlink(userAvatarFilePath);
-    }
-
-    user.avatar = avatarFilename;
-
-    await this.usersRepository.save(user);
-    return user;
-  }
-}
-
-export { UpdateAvatarUserUseCase };

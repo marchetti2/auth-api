@@ -13,25 +13,26 @@ describe("UsersRepository", () => {
 
   beforeAll(async () => {
     connection = await createConnection();
-    usersRepository = new UsersRepository();
-    await connection.runMigrations();
 
+    usersRepository = new UsersRepository();
+
+    await connection.runMigrations();
   });
 
-  afterAll(async() => {
+  afterAll(async () => {
     await connection.createQueryRunner().dropTable("user_token", true);
     await connection.createQueryRunner().dropTable("users", true);
     await connection.createQueryRunner().dropTable("migrations", true);
+
     await connection.close();
   });
 
   it("Should be able to create a new user", async () => {
-
     user = await usersRepository.create({
       first_name: "Mario",
       last_name: "Luiz",
       email: "marchetti2@gmail.com",
-      password: "123123123",
+      password: "123123",
     });
 
     expect(user).toHaveProperty("id");
@@ -43,7 +44,7 @@ describe("UsersRepository", () => {
         first_name: "Mario",
         last_name: "Luiz",
         email: "marchetti2@gmail.com",
-        password: "123123123",
+        password: "123123",
       })
     ).rejects.toBeInstanceOf(QueryFailedError);
   });
@@ -55,9 +56,9 @@ describe("UsersRepository", () => {
   });
 
   it("should not be able to show the profile from non-existing user", async () => {
-    expect(
-      await usersRepository.findByEmail("wrong@gmail.com")
-    ).toBe(undefined);
+    expect(await usersRepository.findByEmail("wrong@gmail.com")).toBe(
+      undefined
+    );
   });
 
   it("Should be able to find a user by id", async () => {
@@ -68,8 +69,6 @@ describe("UsersRepository", () => {
   });
 
   it("should not be able to show the profile from non-existing user", async () => {
-    expect( await usersRepository.findById(uuid())).toBe(
-      undefined
-    );
+    expect(await usersRepository.findById(uuid())).toBe(undefined);
   });
 });

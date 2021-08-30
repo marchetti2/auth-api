@@ -1,13 +1,14 @@
 import { Connection, createConnection } from "typeorm";
+
 import { UsersRepository } from "../../../../modules/users/repositories/implementations/UsersRepository";
 import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser/CreateUserUseCase";
 import { IncorrectEmailOrPasswordError } from "../../../../modules/users/useCases/authenticateUser/IncorrectEmailOrPasswordError";
 import { AuthenticateUserUseCase } from "../../../../modules/users/useCases/authenticateUser/AuthenticateUserUseCase";
 
-describe("AuthenticateUserUseCase", () => {
+describe("AuthenticateUser", () => {
   let connection: Connection;
 
-  let usersRepository: UsersRepository
+  let usersRepository: UsersRepository;
 
   let createUserUseCase: CreateUserUseCase;
   let authenticateUserUseCase: AuthenticateUserUseCase;
@@ -24,9 +25,10 @@ describe("AuthenticateUserUseCase", () => {
   });
 
   afterAll(async () => {
-    await connection.createQueryRunner().dropTable("statements", true);
+    await connection.createQueryRunner().dropTable("user_token", true);
     await connection.createQueryRunner().dropTable("users", true);
     await connection.createQueryRunner().dropTable("migrations", true);
+
     await connection.close();
   });
 
@@ -35,12 +37,12 @@ describe("AuthenticateUserUseCase", () => {
       first_name: "Mario",
       last_name: "Luiz",
       email: "marchetti2@gmail.com",
-      password: "123123123",
+      password: "123123",
     });
 
     const response = await authenticateUserUseCase.execute({
       email: "marchetti2@gmail.com",
-      password: "123456",
+      password: "123123",
     });
 
     expect(response).toHaveProperty("token");

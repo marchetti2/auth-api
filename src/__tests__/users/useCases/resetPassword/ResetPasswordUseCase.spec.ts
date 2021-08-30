@@ -1,4 +1,6 @@
-import { Connection, createConnection } from "typeorm";
+import { Connection, createConnection, QueryFailedError } from "typeorm";
+import { compare } from "bcryptjs";
+import { v4 as uuid } from "uuid";
 
 import { User } from "../../../../modules/users/entities/User";
 import { UsersRepository } from "../../../../modules/users/repositories/implementations/UsersRepository";
@@ -7,94 +9,66 @@ import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser
 import { ResetPasswordUseCase } from "../../../../modules/users/useCases/resetPassword/ResetPasswordUseCase";
 import { ResetPasswordError } from "../../../../modules/users/useCases/resetPassword/ResetPasswordError";
 
-describe('ResetPasswordUseCase', () => {
+describe("ResetPassword", () => {
   let connection: Connection;
+
   let user: User;
 
-  let usersRepository: UsersRepository
-  let userTokenRepository: UserTokenRepository
+  let usersRepository: UsersRepository;
+  let userTokenRepository: UserTokenRepository;
 
   let createUserUseCase: CreateUserUseCase;
   let resetPasswordUseCase: ResetPasswordUseCase;
 
-
-  beforeEach(async () => {
+  beforeAll(async () => {
     connection = await createConnection();
 
     usersRepository = new UsersRepository();
     userTokenRepository = new UserTokenRepository();
 
     createUserUseCase = new CreateUserUseCase(usersRepository);
-    resetPasswordUseCase = new ResetPasswordUseCase(usersRepository,userTokenRepository);
+    resetPasswordUseCase = new ResetPasswordUseCase(
+      usersRepository,
+      userTokenRepository
+    );
 
     await connection.runMigrations();
   });
 
   afterAll(async () => {
-
-    await connection.createQueryRunner().dropTable("statements", true);
+    await connection.createQueryRunner().dropTable("user_token", true);
     await connection.createQueryRunner().dropTable("users", true);
     await connection.createQueryRunner().dropTable("migrations", true);
+
     await connection.close();
   });
 
-  it('should be able to reset the password', async () => {
+  it("should be able to reset the password", async () => {
     user = await createUserUseCase.execute({
       first_name: "Mario",
       last_name: "Luiz",
       email: "marchetti2@gmail.com",
-      password: "123123123",
+      password: "123123",
     });
 
     const { token } = await userTokenRepository.generate(user.id);
 
     await resetPasswordUseCase.execute({
-      password: '123123',
+      password: "123123123",
       token,
     });
 
     const updatedUser = await usersRepository.findById(user.id);
 
-    expect(updatedUser?.password).toBe('123123');
+    expect(await compare("123123123", updatedUser.password)).toBe(true);
   });
 
-  it('should not be able to reset the password with non-existing token', async () => {
+  it("should not be able to reset the password with non-existing token", async () => {
     await expect(
       resetPasswordUseCase.execute({
-        token: 'non-existing-token',
-        password: '123123',
-      }),
-    ).rejects.toBeInstanceOf(ResetPasswordError);
-  });
-
-  it('should not be able to reset the password with non-existing user', async () => {
-    const { token } = await userTokenRepository.generate(
-      'non-existing-user',
-    );
-
-    await expect(
-      resetPasswordUseCase.execute({
-        token,
-        password: '123123',
-      }),
-    ).rejects.toBeInstanceOf(ResetPasswordError);
-  });
-
-  it('should not be able to reset password if passed more than two hours', async () => {
-
-    const { token } = await userTokenRepository.generate(user.id);
-
-    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
-      const customDate = new Date();
-
-      return customDate.setHours(customDate.getHours() + 3);
-    });
-
-    await expect(
-      resetPasswordUseCase.execute({
-        password: '123123',
-        token,
-      }),
-    ).rejects.toBeInstanceOf(ResetPasswordError);
+        token: uuid(),
+        password: "123123",
+      })
+    ).rejects.toBeInstanceOf(ResetPasswordError.TokenDoesNotExistsError);
   });
 });

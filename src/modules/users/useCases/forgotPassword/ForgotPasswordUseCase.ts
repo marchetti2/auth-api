@@ -50,7 +50,7 @@ class ForgotPasswordUseCase {
         file: forgotPasswordTempalte,
         variables: {
           name: `${user.first_name} ${user.last_name}`,
-          link: "http://localhost:3000/reset-password?token=${token}",
+          link: `http://localhost:3000/reset-password?token=${token}`,
         },
       },
     });

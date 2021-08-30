@@ -3,7 +3,7 @@ import { UsersRepository } from "../../../../modules/users/repositories/implemen
 import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser/CreateUserUseCase";
 import { CreateUserError } from "../../../../modules/users/useCases/createUser/CreateUserError";
 
-describe("CreateUserUseCase",() => {
+describe("CreateUser", () => {
   let connection: Connection;
 
   let usersRepository: UsersRepository;
@@ -20,10 +20,11 @@ describe("CreateUserUseCase",() => {
     await connection.runMigrations();
   });
 
-  afterAll(async() => {
+  afterAll(async () => {
     await connection.createQueryRunner().dropTable("user_token", true);
     await connection.createQueryRunner().dropTable("users", true);
     await connection.createQueryRunner().dropTable("migrations", true);
+
     await connection.close();
   });
 

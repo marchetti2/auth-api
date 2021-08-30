@@ -1,5 +1,5 @@
-import { injectable, inject } from 'tsyringe';
-import { hash, compare } from 'bcryptjs';
+import { injectable, inject } from "tsyringe";
+import { hash, compare } from "bcryptjs";
 
 import { User } from "../../entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
@@ -18,8 +18,8 @@ interface IRequest {
 @injectable()
 class UpdateUserProfileUseCase {
   constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
   ) {}
 
   public async execute({
@@ -30,9 +30,7 @@ class UpdateUserProfileUseCase {
     password,
     old_password,
   }: IRequest): Promise<User> {
-
     const user = await this.usersRepository.findById(user_id);
-
     if (!user) {
       throw new UpdateUserProfileError.UserNotFoundError();
     }
@@ -46,15 +44,14 @@ class UpdateUserProfileUseCase {
     Object.assign(user, { first_name, last_name, email });
 
     if (password && !old_password) {
-      throw new UpdateUserProfileError.OldPasswordNotSetError()
+      throw new UpdateUserProfileError.OldPasswordNotSetError();
     }
 
     if (password && old_password) {
-      const checkOldPassword = await compare(
-        old_password,
-        user.password,
-      );
-
+      console.log(typeof old_password, typeof user.password);
+      console.log(old_password, user.password);
+      const checkOldPassword = await compare(old_password, user.password);
+      console.log(checkOldPassword);
       if (!checkOldPassword) {
         throw new UpdateUserProfileError.OldPasswordNotMatchError();
       }

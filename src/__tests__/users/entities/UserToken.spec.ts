@@ -3,7 +3,7 @@ import { UserToken } from "../../../modules/users/entities/UserToken";
 
 import { validate } from "uuid";
 
-describe("User Entity", () => {
+describe("UserToken Entity", () => {
   it("should be able to create a user token", () => {
     const user = new User();
     const userToken = new UserToken();

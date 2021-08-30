@@ -6,7 +6,7 @@ import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser
 import { ShowUserProfileUseCase } from "../../../../modules/users/useCases/showUserProfile/ShowUserProfileUseCase";
 import { ShowUserProfileError } from "../../../../modules/users/useCases/showUserProfile/ShowUserProfileError";
 
-describe("ShowUserProfileUseCase", () => {
+describe("ShowUserProfile", () => {
   let connection: Connection;
 
   let usersRepository: UsersRepository;
@@ -26,10 +26,10 @@ describe("ShowUserProfileUseCase", () => {
   });
 
   afterAll(async () => {
-
-    await connection.createQueryRunner().dropTable("statements", true);
+    await connection.createQueryRunner().dropTable("user_token", true);
     await connection.createQueryRunner().dropTable("users", true);
     await connection.createQueryRunner().dropTable("migrations", true);
+
     await connection.close();
   });
 
@@ -38,7 +38,7 @@ describe("ShowUserProfileUseCase", () => {
       first_name: "Mario",
       last_name: "Luiz",
       email: "marchetti2@gmail.com",
-      password: "123123123",
+      password: "123123",
     });
 
     const response = await showUserProfileUseCase.execute(String(user.id));

@@ -1,18 +1,18 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository } from "typeorm";
 
-import { IUserTokenRepository } from '../IUserTokenRepository';
+import { IUserTokenRepository } from "../IUserTokenRepository";
 
-import { UserToken } from '../../entities/UserToken';
+import { UserToken } from "../../entities/UserToken";
 
 class UserTokenRepository implements IUserTokenRepository {
-  private ormRepository: Repository<UserToken>;
+  private repository: Repository<UserToken>;
 
   constructor() {
-    this.ormRepository = getRepository(UserToken);
+    this.repository = getRepository(UserToken);
   }
 
   async findByToken(token: string): Promise<UserToken | undefined> {
-    const userToken = await this.ormRepository.findOne({
+    const userToken = await this.repository.findOne({
       where: { token },
     });
 
@@ -20,9 +20,9 @@ class UserTokenRepository implements IUserTokenRepository {
   }
 
   async generate(user_id: string): Promise<UserToken> {
-    const userToken = this.ormRepository.create({ user_id });
+    const userToken = this.repository.create({ user_id });
 
-    await this.ormRepository.save(userToken);
+    await this.repository.save(userToken);
 
     return userToken;
   }
