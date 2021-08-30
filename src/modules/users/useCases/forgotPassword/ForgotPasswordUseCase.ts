@@ -45,7 +45,7 @@ class ForgotPasswordUseCase {
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
       },
-      subject: "App-Sports - Recuperação de senha",
+      subject: "Recuperação de senha",
       templateData: {
         file: forgotPasswordTempalte,
         variables: {
