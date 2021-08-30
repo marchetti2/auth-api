@@ -2,9 +2,9 @@
 
 <h2>About</h2>
 
-Aplicação Back-end de autenticação **completa**, utilizando Node.js, express, docker, Postgres e Escrita em typescript. Desenvolvida utilizando os princípios do SOLID e boas práticas de codigo e testes.
+Aplicação Back-end de autenticação **completa**, utilizando Node.js, express, docker, Postgres e Escrita em typescript. Desenvolvida utilizando os princípios do SOLID e boas práticas de codigo. Testes para todas as funcionalidades e rotas utilizando Jest e Supertest.
 
-As funcionalides sao:
+As funcionadalides sao:
 
 - Cadastro de usuários
 - Autenticação
@@ -119,30 +119,28 @@ First, verify that the databases are running. From the API directory, run the fo
 
 <h6>/users</h6>
 
-- `POST /users`: Register a new user. Set `first_name, last_name, email, password` body params.
+- `POST /users`: *Register a new user.* Send the `first_name, last_name, email, password` body params.
 
-- `PATCH /users/avatar`: Update the user's avatar.
+- `PATCH /users/avatar`: *Update the user's avatar.* Fill the bearer token with the token received from the authentication response. Configure the 'Multipart Form' type request with the name of the avatar field and upload the image file.
 
 <h6>/sessions</h6>
 
-- `POST /sessions`: User authentication. Set `email, password` body params.
+- `POST /sessions`: *User authentication.* Send the `email, password` body params.
 
 <h6>/profile</h6>
 
-- `GET /profile`: Show user profile. Set Bearer token received from authenticate response (Only athententicated users can see).
+- `GET /profile`: *Show user profile (Only athententicated users can see).* Fill the bearer token with the token received from the authentication response.
 
-- `PUT /profile`: Update profile. Set `first_name, last_name, password, email` body params and Bearer token received from authenticate response.
+- `PUT /profile`: *Update profile.* Fill `first_name, last_name, password, email` body params and Bearer token received from authenticate response.
 
 <h6>/password</h6>
 
-- `POST /password/forgot`: Password recovery. Set `email` body params.
+- `POST /password/forgot`: *Password recovery.* Fill `email` body params.
 
-- `POST /password/reset`: Change Password. Set `password, password_confirmation, token` body params. The token is received from 'forgot route' response.
+- `POST /password/reset`: *Change Password.* Fill `password, password_confirmation, token` body params. You will receive a link in the forgot request response to a fake email. The token is in the route params of the link sent in the fake email
 
 
 <h2 id="license">License</h2>
 
 This project was developed by Mário Luiz.
 
-
-app.use("/files", express.static(upload.directory));
