@@ -2,17 +2,17 @@
 
 <h2>About</h2>
 
-Aplicação Back-end de autenticação **completa**, utilizando Node.js, express, docker, Postgres e Escrita em typescript. Desenvolvida utilizando os princípios do SOLID e boas práticas de codigo. Testes para todas as funcionalidades e rotas utilizando Jest e Supertest.
+**Full** authentication backend application, using Node.js, express, docker, Postgres and Typescript. Developed using SOLID principles and good coding practices. Tests for all features and routes using Jest and Supertest.
 
-As funcionadalides sao:
+Features:
 
-- Cadastro de usuários
-- Autenticação
-- Listagem de dados do usuario.
-- Atualização de dados do usuario.
-- Upload de imagem de perfil para o usuario.
-- Envio de email para recuperação de senha.
-- Alteração de senha
+- User registration
+- Authentication
+- Show user profile data.
+- User data update.
+- Upload a user profile picture.
+- Send email for password recovery.
+- Reset Password
 
 <h2>Summary</h2>
 
@@ -20,8 +20,8 @@ As funcionadalides sao:
 - [Getting started](#started)
   - [Download](#download)
   - [Environment](#environment)
-    - [Databases](#databases)
-    - [Environment variables](#variables)
+    - [Databases](#database)
+  - [Tests](#environment)
   - [Running the API](#running)
     - [Tools](#tools)
   - [Routes](#routes)
@@ -79,7 +79,7 @@ Open the terminal and execute the following commands:
 ```
 <h4 id="environment">Environment</h4>
 
-<h6 id="databases">Databases</h6>
+<h6 id="database">Database</h6>
 
 Using the **docker**, start an instance of the databases below.
 
@@ -96,6 +96,15 @@ If not, run:
 ```bash
 $ docker start postgres
 ```
+
+<h2 id="tests">Tests</h2>
+
+Run the following command:
+
+```bash
+$ yarn test
+```
+
 <h2 id="running">Running the API</h2>
 
 First, verify that the databases are running. From the API directory, run the following commands:
@@ -119,25 +128,25 @@ First, verify that the databases are running. From the API directory, run the fo
 
 <h6>/users</h6>
 
-- `POST /users`: *Register a new user.* Send the `first_name, last_name, email, password` body params.
+- `POST /users`: ***Register a new user.*** Send the `first_name, last_name, email, password` body params.
 
-- `PATCH /users/avatar`: *Update the user's avatar.* Fill the bearer token with the token received from the authentication response. Configure the 'Multipart Form' type request with the name of the avatar field and upload the image file.
+- `PATCH /users/avatar`: ***Update the user's avatar.*** Fill the bearer token with the token received from the authentication response. Configure the 'Multipart Form' type request with the name of the avatar field and upload the image file.
 
 <h6>/sessions</h6>
 
-- `POST /sessions`: *User authentication.* Send the `email, password` body params.
+- `POST /sessions`: ***User authentication.*** Send the `email, password` body params.
 
 <h6>/profile</h6>
 
-- `GET /profile`: *Show user profile (Only athententicated users can see).* Fill the bearer token with the token received from the authentication response.
+- `GET /profile`: ***Show user profile (Only athententicated users can see).*** Fill the bearer token with the token received from the authentication response.
 
-- `PUT /profile`: *Update profile.* Fill `first_name, last_name, password, email` body params and Bearer token received from authenticate response.
+- `PUT /profile`: ***Update profile.*** Fill `first_name, last_name, password, email` body params and Bearer token received from authenticate response.
 
 <h6>/password</h6>
 
-- `POST /password/forgot`: *Password recovery.* Fill `email` body params.
+- `POST /password/forgot`: ***Password recovery.*** Fill `email` body params.
 
-- `POST /password/reset`: *Change Password.* Fill `password, password_confirmation, token` body params. You will receive a link in the forgot request response to a fake email. The token is in the route params of the link sent in the fake email
+- `POST /password/reset`: ***Change Password.*** Fill `password, password_confirmation, token` body params. You will receive a link in the forgot request response to a fake email. The token is in the route params of the link sent in the fake email
 
 
 <h2 id="license">License</h2>
