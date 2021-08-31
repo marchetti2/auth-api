@@ -1,10 +1,10 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import { AuthenticateUserController } from "../modules/users/useCases/authenticateUser/AuthenticateUserController";
+import { AuthenticateUserController } from '../modules/users/useCases/authenticateUser/AuthenticateUserController';
 
 const authenticateRoutes = Router();
 const authenticateUserController = new AuthenticateUserController();
 
-authenticateRoutes.post("/", authenticateUserController.execute);
+authenticateRoutes.post('/', authenticateUserController.execute);
 
 export { authenticateRoutes };

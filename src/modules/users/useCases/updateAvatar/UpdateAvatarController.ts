@@ -5,9 +5,7 @@ import { ProfileMap } from '../../mappers/ProfileMap';
 import { UpdateAvatarUserUseCase } from './UpdateAvatarUseCase';
 
 class UpdateAvatarController {
-
   async execute(request: Request, response: Response): Promise<Response> {
-
     const { id } = request.user;
     const { filename } = request.file;
 
@@ -20,8 +18,8 @@ class UpdateAvatarController {
 
     const profileDTO = ProfileMap.toDTO(user);
 
-    return response.json(profileDTO)
+    return response.json(profileDTO);
   }
 }
 
-export { UpdateAvatarController }
+export { UpdateAvatarController };

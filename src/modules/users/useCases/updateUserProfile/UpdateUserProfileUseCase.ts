@@ -1,10 +1,10 @@
-import { injectable, inject } from "tsyringe";
-import { hash, compare } from "bcryptjs";
+import { injectable, inject } from 'tsyringe';
+import { hash, compare } from 'bcryptjs';
 
-import { User } from "../../entities/User";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { User } from '../../entities/User';
+import { IUsersRepository } from '../../repositories/IUsersRepository';
 
-import { UpdateUserProfileError } from "./UpdateUserProfileError";
+import { UpdateUserProfileError } from './UpdateUserProfileError';
 
 interface IRequest {
   user_id: string;
@@ -18,7 +18,7 @@ interface IRequest {
 @injectable()
 class UpdateUserProfileUseCase {
   constructor(
-    @inject("UsersRepository")
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository
   ) {}
 

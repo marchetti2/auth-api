@@ -5,4 +5,4 @@ interface ICreateUserDTO {
   password: string;
 }
 
-export { ICreateUserDTO }
+export { ICreateUserDTO };

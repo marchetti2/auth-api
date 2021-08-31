@@ -1,8 +1,8 @@
-import { AppError } from "../../../../shared/errors/AppError";
+import { AppError } from '../../../../shared/errors/AppError';
 
 class ForgotPasswordError extends AppError {
   constructor() {
-    super("User does not exists");
+    super('User does not exists');
   }
 }
 

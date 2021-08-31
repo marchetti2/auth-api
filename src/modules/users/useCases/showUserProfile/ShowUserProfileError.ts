@@ -1,4 +1,4 @@
-import { AppError } from "../../../../shared/errors/AppError";
+import { AppError } from '../../../../shared/errors/AppError';
 
 class ShowUserProfileError extends AppError {
   constructor() {
@@ -6,4 +6,4 @@ class ShowUserProfileError extends AppError {
   }
 }
 
-export { ShowUserProfileError }
+export { ShowUserProfileError };

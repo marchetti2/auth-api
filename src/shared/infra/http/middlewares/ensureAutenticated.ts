@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
 import authConfig from '../../../../config/auth';
-import { JWTTokenError } from "../../../errors/JWTTokenError";
+import { JWTTokenError } from '../../../errors/JWTTokenError';
 
 interface IPayload {
   sub: string;
@@ -16,10 +16,10 @@ async function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new JWTTokenError.JWTTokenMissingError()
+    throw new JWTTokenError.JWTTokenMissingError();
   }
 
-  const [, token] = authHeader.split(" ");
+  const [, token] = authHeader.split(' ');
 
   try {
     const { sub: user_id } = verify(token, authConfig.jwt.secret) as IPayload;
@@ -30,8 +30,8 @@ async function ensureAuthenticated(
 
     next();
   } catch {
-    throw new JWTTokenError.JWTInvalidTokenError()
+    throw new JWTTokenError.JWTInvalidTokenError();
   }
 }
 
-export { ensureAuthenticated }
+export { ensureAuthenticated };

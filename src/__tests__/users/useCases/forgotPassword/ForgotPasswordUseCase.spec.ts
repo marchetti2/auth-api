@@ -1,15 +1,15 @@
-import { Connection, createConnection } from "typeorm";
+import { Connection, createConnection } from 'typeorm';
 
-import { UsersRepository } from "../../../../modules/users/repositories/implementations/UsersRepository";
-import { UserTokenRepository } from "../../../../modules/users/repositories/implementations/UserTokenRepository";
-import { CreateUserUseCase } from "../../../../modules/users/useCases/createUser/CreateUserUseCase";
-import { ForgotPasswordUseCase } from "../../../../modules/users/useCases/forgotPassword/ForgotPasswordUseCase";
-import { ForgotPasswordError } from "../../../../modules/users/useCases/forgotPassword/ForgotPasswordError";
-import { EtherealMailProvider } from "../../../../shared/container/providers/MailProvider/implementations/EtherealMailProvider";
-import { HandlebarsMailTemplateProvider } from "../../../../shared/container/providers/MailTemplateProvider/implementations/HandlebarsMailTemplateProvider";
-import { IMailProvider } from "../../../../shared/container/providers/MailProvider/models/IMailProvider";
+import { UsersRepository } from '../../../../modules/users/repositories/implementations/UsersRepository';
+import { UserTokenRepository } from '../../../../modules/users/repositories/implementations/UserTokenRepository';
+import { CreateUserUseCase } from '../../../../modules/users/useCases/createUser/CreateUserUseCase';
+import { ForgotPasswordUseCase } from '../../../../modules/users/useCases/forgotPassword/ForgotPasswordUseCase';
+import { ForgotPasswordError } from '../../../../modules/users/useCases/forgotPassword/ForgotPasswordError';
+import { EtherealMailProvider } from '../../../../shared/container/providers/MailProvider/implementations/EtherealMailProvider';
+import { HandlebarsMailTemplateProvider } from '../../../../shared/container/providers/MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
+import { IMailProvider } from '../../../../shared/container/providers/MailProvider/models/IMailProvider';
 
-describe("ForgotPassword", () => {
+describe('ForgotPassword', () => {
   let connection: Connection;
 
   let usersRepository: UsersRepository;
@@ -39,17 +39,17 @@ describe("ForgotPassword", () => {
   });
 
   afterAll(async () => {
-    await connection.createQueryRunner().dropTable("user_token", true);
-    await connection.createQueryRunner().dropTable("users", true);
-    await connection.createQueryRunner().dropTable("migrations", true);
+    await connection.createQueryRunner().dropTable('user_token', true);
+    await connection.createQueryRunner().dropTable('users', true);
+    await connection.createQueryRunner().dropTable('migrations', true);
 
     await connection.close();
   });
 
-  it("should not be able to recover a non-existing user password", async () => {
+  it('should not be able to recover a non-existing user password', async () => {
     await expect(
       forgotPasswordUseCase.execute({
-        email: "johndoe@example.com",
+        email: 'johndoe@example.com',
       })
     ).rejects.toBeInstanceOf(ForgotPasswordError);
   });

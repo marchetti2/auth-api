@@ -5,10 +5,10 @@ import { ProfileMap } from '../../mappers/ProfileMap';
 import { UpdateUserProfileUseCase } from './UpdateUserProfileUseCase';
 
 class UpdateUserProfileController {
-
   async execute(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { first_name, last_name, email, password, old_password } = request.body;
+    const { first_name, last_name, email, password, old_password } =
+      request.body;
 
     const updateProfile = container.resolve(UpdateUserProfileUseCase);
 
@@ -27,4 +27,4 @@ class UpdateUserProfileController {
   }
 }
 
-export { UpdateUserProfileController }
+export { UpdateUserProfileController };

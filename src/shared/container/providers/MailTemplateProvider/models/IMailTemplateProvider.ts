@@ -4,4 +4,4 @@ interface IMailTemplateProvider {
   parse(data: IParseMailTemplateDTO): Promise<string>;
 }
 
-export { IMailTemplateProvider }
+export { IMailTemplateProvider };

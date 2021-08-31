@@ -3,13 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid';
 
-@Entity("users")
+@Entity('users')
 class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id?: string;
 
   @Column()
@@ -38,7 +38,6 @@ class User {
       this.id = uuid();
     }
   }
-
 }
 
 export { User };

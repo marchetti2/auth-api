@@ -12,4 +12,4 @@ interface ISendMailDTO {
   templateData: IParseMailTemplateDTO;
 }
 
-export { ISendMailDTO }
+export { ISendMailDTO };

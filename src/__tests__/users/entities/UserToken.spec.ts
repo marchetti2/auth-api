@@ -1,25 +1,25 @@
-import { User } from "../../../modules/users/entities/User";
-import { UserToken } from "../../../modules/users/entities/UserToken";
+import { User } from '../../../modules/users/entities/User';
+import { UserToken } from '../../../modules/users/entities/UserToken';
 
-import { validate } from "uuid";
+import { validate } from 'uuid';
 
-describe("UserToken Entity", () => {
-  it("should be able to create a user token", () => {
+describe('UserToken Entity', () => {
+  it('should be able to create a user token', () => {
     const user = new User();
     const userToken = new UserToken();
 
     Object.assign(user, {
-      first_name: "Mario",
-      last_name: "Luiz",
-      email: "marchetti2@gmail.com",
-      password: "123123",
+      first_name: 'Mario',
+      last_name: 'Luiz',
+      email: 'marchetti2@gmail.com',
+      password: '123123',
       created_at: new Date(),
       updated_at: new Date(),
     });
 
     Object.assign(userToken, {
       user_id: user.id,
-      token: "111",
+      token: '111',
       created_at: new Date(),
       updated_at: new Date(),
     });

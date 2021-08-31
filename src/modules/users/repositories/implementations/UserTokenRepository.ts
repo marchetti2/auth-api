@@ -1,8 +1,8 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Repository } from 'typeorm';
 
-import { IUserTokenRepository } from "../IUserTokenRepository";
+import { IUserTokenRepository } from '../IUserTokenRepository';
 
-import { UserToken } from "../../entities/UserToken";
+import { UserToken } from '../../entities/UserToken';
 
 class UserTokenRepository implements IUserTokenRepository {
   private repository: Repository<UserToken>;

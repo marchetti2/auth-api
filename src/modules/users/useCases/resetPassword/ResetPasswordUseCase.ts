@@ -1,10 +1,10 @@
-import { injectable, inject } from "tsyringe";
-import { isAfter, addHours } from "date-fns";
-import { hash } from "bcryptjs";
+import { injectable, inject } from 'tsyringe';
+import { isAfter, addHours } from 'date-fns';
+import { hash } from 'bcryptjs';
 
-import { ResetPasswordError } from "./ResetPasswordError";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { IUserTokenRepository } from "../../repositories/IUserTokenRepository";
+import { ResetPasswordError } from './ResetPasswordError';
+import { IUsersRepository } from '../../repositories/IUsersRepository';
+import { IUserTokenRepository } from '../../repositories/IUserTokenRepository';
 
 interface IRequest {
   password: string;
@@ -14,10 +14,10 @@ interface IRequest {
 @injectable()
 class ResetPasswordUseCase {
   constructor(
-    @inject("UsersRepository")
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject("UserTokenRepository")
+    @inject('UserTokenRepository')
     private userTokenRepository: IUserTokenRepository
   ) {}
 

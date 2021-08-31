@@ -5,4 +5,4 @@ interface IUserTokenRepository {
   findByToken(token: string): Promise<UserToken | undefined>;
 }
 
-export { IUserTokenRepository }
+export { IUserTokenRepository };

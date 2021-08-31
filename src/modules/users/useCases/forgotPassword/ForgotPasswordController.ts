@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { container } from "tsyringe";
+import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
-import { ForgotPasswordUseCase } from "./ForgotPasswordUseCase";
+import { ForgotPasswordUseCase } from './ForgotPasswordUseCase';
 
 class ForgotPasswordController {
   async execute(request: Request, response: Response): Promise<Response> {
@@ -12,7 +12,7 @@ class ForgotPasswordController {
     const emailResponse = await forgotPasswordUseCase.execute({
       email,
     });
-    return response.status(200).json({Preview_URL: emailResponse});
+    return response.status(200).json({ Preview_URL: emailResponse });
   }
 }
 

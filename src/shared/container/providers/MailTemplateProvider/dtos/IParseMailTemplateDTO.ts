@@ -7,4 +7,4 @@ interface IParseMailTemplateDTO {
   variables: ITemplateVariables;
 }
 
-export { IParseMailTemplateDTO }
+export { IParseMailTemplateDTO };

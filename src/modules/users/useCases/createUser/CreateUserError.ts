@@ -1,8 +1,8 @@
-import { AppError } from "../../../../shared/errors/AppError";
+import { AppError } from '../../../../shared/errors/AppError';
 
 class CreateUserError extends AppError {
   constructor() {
-    super("User already exists");
+    super('User already exists');
   }
 }
 

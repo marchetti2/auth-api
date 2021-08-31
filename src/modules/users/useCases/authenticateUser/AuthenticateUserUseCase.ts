@@ -1,12 +1,12 @@
-import { inject, injectable } from "tsyringe";
+import { inject, injectable } from 'tsyringe';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import authConfig from '../../../../config/auth';
 
-import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { IncorrectEmailOrPasswordError } from "./IncorrectEmailOrPasswordError";
-import { IAuthenticateUserDTO } from './IAuthenticateUserDTO'
+import { IUsersRepository } from '../../repositories/IUsersRepository';
+import { IncorrectEmailOrPasswordError } from './IncorrectEmailOrPasswordError';
+import { IAuthenticateUserDTO } from './IAuthenticateUserDTO';
 
 interface IRequest {
   email: string;
@@ -16,14 +16,14 @@ interface IRequest {
 @injectable()
 class AuthenticateUserUseCase {
   constructor(
-    @inject("UsersRepository")
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository
   ) {}
 
   async execute({ email, password }: IRequest): Promise<IAuthenticateUserDTO> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if(!user) {
+    if (!user) {
       throw new IncorrectEmailOrPasswordError();
     }
 
@@ -45,10 +45,10 @@ class AuthenticateUserUseCase {
         id: user.id,
         first_name: user.first_name,
         last_name: user.last_name,
-        email: user.email
+        email: user.email,
       },
-      token
-    }
+      token,
+    };
   }
 }
 
